@@ -45,8 +45,23 @@ class GetOrdersViews(APIView):
     def post(self,request):
         params = request.data
         print("params",params)
-        serializer = StudentSerializer(data=params)
+        serializer = OrdersSerializer(data=params)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"message","done"})
+class DeleteStudentView(APIView):
+    def get(self,request,pk):
+        instance = Student.objects.get(id=pk)
+        instance.delete()
+        return Response({"Message","Delete"})
+class DeleteOrdersViews(APIView):
+    def get(self,request,pk):
+        instance = Orders.objects.get(id=pk)
+        instance.delete()
+        return Response({"message","Delete"})
 
+class StudentsDetailsAddressViews(APIView):
+    def get (self,request,pk):
+        instances = Student.objects.filter(id=pk)
+        serializer =StudentsDetailsAddressSerializer(instances,many=True )
+        return Response(serializer.data)
